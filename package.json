@@ -1,0 +1,43 @@
+{
+  "name": "qupidjs",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./packages/server/src/index.ts",
+    "dev:web": "pnpm --filter @qupidjs/web run dev",
+    "dev:admin": "pnpm --filter @qupidjs/admin run dev",
+    "build:server": "tsc -p ./packages/server && tsup-node ./packages/server/src/index.ts --out-dir ./packages/server/dist",
+    "start:server": "node ./packages/server/dist/index.js",
+    "ts-node": "ts-node -r tsconfig-paths/register --transpile-only",
+    "ts-node:check": "ts-node -r tsconfig-paths/register",
+    "format": "prettier --write .",
+    "server:migrate": "ts-node -r tsconfig-paths/register --transpile-only ./scripts/prisma_gen/index.ts"
+  },
+  "packageManager": "pnpm@9.13.2+sha512.88c9c3864450350e65a33587ab801acf946d7c814ed1134da4a924f6df5a2120fd36b46aab68f7cd1d413149112d53c7db3a4136624cfd00ff1846a0c6cef48a",
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@prisma/internals": "^5.22.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^20",
+    "acorn": "^8.14.0",
+    "commander": "^12.1.0",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "mermaid": "^11.4.0",
+    "picocolors": "^1.1.1",
+    "prettier": "^3.3.3",
+    "prisma-schema-dsl": "^2.2.0",
+    "prisma-schema-dsl-types": "^1.1.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.14.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "yaml": "^2.6.0",
+    "zod": "^3.23.8"
+  }
+}
