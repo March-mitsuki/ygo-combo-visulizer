@@ -112,25 +112,26 @@ export type HeadStep = {
   prevStep?: Step;
 };
 export type StepsInit = {
+  id?: number;
   name: string;
-  deck: CardDeck;
+  cardDeck: CardDeck;
   finalField: FinalField;
   data: Step[];
 };
 export class Steps {
   id: number;
   name: string;
-  deck: CardDeck;
+  cardDeck: CardDeck;
   finalField: FinalField;
   data: Step[] = [];
 
-  constructor({ name, deck, finalField, data }: StepsInit) {
+  constructor({ name, id, cardDeck, finalField, data }: StepsInit) {
     if (data.length < 1) {
       throw new Error("Data must have at least one step");
     }
-    this.id = Date.now();
+    this.id = id ?? Date.now();
     this.name = name;
-    this.deck = deck;
+    this.cardDeck = cardDeck;
     this.finalField = finalField;
     this.data = data;
   }
@@ -142,13 +143,13 @@ export class Steps {
     return this.data[0];
   }
 
-  toJSON() {
+  toSaveJSON() {
     return {
       id: this.id,
       name: this.name,
-      deck: this.deck,
-      finalField: this.finalField,
-      data: this.data,
+      cardDeckId: this.cardDeck.id,
+      finalFieldId: this.finalField.id,
+      data: JSON.stringify(this.data),
     };
   }
 

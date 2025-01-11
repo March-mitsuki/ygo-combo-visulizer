@@ -16,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { Input } from "@chakra-ui/react";
 import { store } from "@web/store";
 import { toolBarEvents } from "./events";
+import { cardDeckClient } from "@web/httpclient/models";
+import { toaster } from "../ui/toaster";
 
 const AddCardDeckModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,9 +48,27 @@ const AddCardDeckModal: React.FC = () => {
             onSubmit={handleSubmit((data) => {
               const cardDeck = BuildFactory.cardDeck(data.name);
               store.addCardDeck(cardDeck);
+              cardDeckClient
+                .create({
+                  name: cardDeck.name,
+                  userId: 1,
+                })
+                .then((res) => {
+                  if (res.code.toString().startsWith("2")) {
+                    toaster.success({ title: "已保存到服务器" });
+                  } else {
+                    toaster.error({
+                      title: "保存到服务器失败",
+                      description: res.code,
+                    });
+                  }
+                })
+                .catch((e) => {
+                  toaster.error({ title: "请求出错" });
+                  console.error("请求出错", e);
+                });
 
               toolBarEvents.emit("add-card-deck-done");
-              console.log("emit add-card-deck-done");
               setIsOpen(false);
 
               reset();

@@ -11,18 +11,13 @@ import {
 import { Button } from "@web/components/ui/button";
 import { Field } from "@web/components/ui/field";
 import { useEffect, useState } from "react";
-import {
-  BuildFactory,
-  CardDeck,
-  FinalField,
-  GameFactory,
-  Steps,
-} from "@web/interfaces";
+import { FinalField, GameFactory, Steps } from "@web/interfaces";
 import { useForm } from "react-hook-form";
 import { Input } from "@chakra-ui/react";
 import { store } from "@web/store";
 import { toolBarEvents } from "./events";
 import { toaster } from "../ui/toaster";
+import { stepsClient } from "@web/httpclient/models";
 
 const AddStepsModal: React.FC = () => {
   const [finalField, setFinalField] = useState<FinalField>();
@@ -62,11 +57,27 @@ const AddStepsModal: React.FC = () => {
 
               const steps = new Steps({
                 name: data.name,
-                deck: store.getDeckById(finalField.cardDeckId)!,
+                cardDeck: store.getDeckById(finalField.cardDeckId)!,
                 finalField: finalField,
                 data: [GameFactory.step()],
               });
               store.addSteps(steps);
+              stepsClient
+                .create(steps.toSaveJSON())
+                .then((res) => {
+                  if (res.code.toString().startsWith("2")) {
+                    toaster.success({ title: "已保存到服务器" });
+                  } else {
+                    toaster.error({
+                      title: "保存到服务器失败",
+                      description: res.code,
+                    });
+                  }
+                })
+                .catch((e) => {
+                  toaster.error({ title: "请求出错" });
+                  console.error("请求出错", e);
+                });
 
               toolBarEvents.emit("add-steps-done");
               setFinalField(undefined);

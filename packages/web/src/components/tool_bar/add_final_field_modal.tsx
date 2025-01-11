@@ -17,6 +17,7 @@ import { Input } from "@chakra-ui/react";
 import { store } from "@web/store";
 import { toolBarEvents } from "./events";
 import { toaster } from "../ui/toaster";
+import { finalFieldClient } from "@web/httpclient/models";
 
 const AddFinalFieldModal: React.FC = () => {
   const [cardDeck, setCardDeck] = useState<CardDeck>();
@@ -59,6 +60,22 @@ const AddFinalFieldModal: React.FC = () => {
                 name: data.name,
               });
               store.addFinalField(finalField);
+              finalFieldClient
+                .create(finalField)
+                .then((res) => {
+                  if (res.code.toString().startsWith("2")) {
+                    toaster.success({ title: "已保存到服务器" });
+                  } else {
+                    toaster.error({
+                      title: "保存到服务器失败",
+                      description: res.code,
+                    });
+                  }
+                })
+                .catch((e) => {
+                  toaster.error({ title: "请求出错" });
+                  console.error("请求出错", e);
+                });
 
               toolBarEvents.emit("add-final-field-done");
               setCardDeck(undefined);

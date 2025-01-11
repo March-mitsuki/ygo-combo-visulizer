@@ -70,25 +70,27 @@ const Body: React.FC = () => {
   }, []);
 
   return (
-    <AccordionRoot collapsible>
-      {store.deckList.map((deck) => (
-        <AccordionItem key={deck.id + refresh} value={deck.name}>
+    <AccordionRoot collapsible multiple>
+      {store.cardDeckList.map((cardDeck) => (
+        <AccordionItem key={cardDeck.id + refresh} value={cardDeck.name}>
           <Box pos="relative">
             <AccordionItemTrigger indicatorPlacement="start">
-              {deck.name}
+              {cardDeck.name}
             </AccordionItemTrigger>
             <AbsoluteCenter axis="vertical" insetEnd="2">
               <Button
                 variant="outline"
                 size="xs"
-                onClick={() => toolBarEvents.emit("req-add-final-field", deck)}
+                onClick={() =>
+                  toolBarEvents.emit("req-add-final-field", cardDeck)
+                }
               >
                 添加终场
               </Button>
             </AbsoluteCenter>
           </Box>
           <AccordionItemContent>
-            <StepsBody deck={deck} />
+            <StepsBody cardDeck={cardDeck} />
           </AccordionItemContent>
         </AccordionItem>
       ))}
@@ -97,8 +99,8 @@ const Body: React.FC = () => {
 };
 
 const StepsBody: React.FC<{
-  deck: CardDeck;
-}> = ({ deck }) => {
+  cardDeck: CardDeck;
+}> = ({ cardDeck }) => {
   const [refresh, setRefresh] = useState(0);
   const triggerRefresh = () => {
     setRefresh((prev) => {
@@ -114,7 +116,7 @@ const StepsBody: React.FC<{
 
   return (
     <AccordionRoot collapsible variant="subtle">
-      {store.getDeckFinalFields(deck.id).map((finalField) => (
+      {store.getDeckFinalFields(cardDeck.id).map((finalField) => (
         <AccordionItem key={finalField.id + refresh} value={finalField.name}>
           <Box position="relative">
             <AccordionItemTrigger indicatorPlacement="start">

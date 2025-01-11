@@ -8,12 +8,46 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
-  username  String   @unique
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  email     String     @unique
+  username  String     @unique
   nickname  String
   password  String
   age       Int?
+  CardDeck  CardDeck[]
+}
+
+model CardDeck {
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  user       User         @relation(fields: [userId], references: [id])
+  userId     Int
+  name       String
+  FinalField FinalField[]
+  Steps      Steps[]
+}
+
+model FinalField {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  name       String
+  cardDeck   CardDeck @relation(fields: [cardDeckId], references: [id])
+  cardDeckId Int
+  Steps      Steps[]
+}
+
+model Steps {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  name         String
+  cardDeck     CardDeck   @relation(fields: [cardDeckId], references: [id])
+  cardDeckId   Int
+  finalField   FinalField @relation(fields: [finalFieldId], references: [id])
+  finalFieldId Int
+  data         String
 }

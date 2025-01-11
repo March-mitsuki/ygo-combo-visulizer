@@ -9,3 +9,9 @@ export type {
   Update,
   Upsert,
 } from "./core";
+
+export type {
+  GetUserStepsRequest,
+  GetUserStepsResponse,
+  GetUserStepsEndpoint,
+} from "./steps";

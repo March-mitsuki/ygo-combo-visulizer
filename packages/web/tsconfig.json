@@ -22,6 +22,7 @@
     "paths": {
       "@qupidjs/types/api": ["../types/api"],
       "@qupidjs/types/models": ["../types/models"],
+      "@qupidjs/httpclient": ["../httpclient/src"],
       "@web/*": ["./src/*"]
     }
   },

@@ -45,4 +45,56 @@ export const userModel: Model = new Model({
   ],
 });
 
-export const models = [userModel];
+export const cardDeckModel: Model = new Model({
+  name: "CardDeck",
+  fields: [
+    intIdField,
+    ...basicFields,
+    fields.relation({
+      name: "user",
+      model: () => userModel,
+      fields: [fields.int({ name: "userId" })],
+      references: ["id"],
+    }),
+    fields.string({ name: "name" }),
+  ],
+});
+
+export const finalFieldModel: Model = new Model({
+  name: "FinalField",
+  fields: [
+    intIdField,
+    ...basicFields,
+    fields.string({ name: "name" }),
+    fields.relation({
+      name: "cardDeck",
+      model: () => cardDeckModel,
+      fields: [fields.int({ name: "cardDeckId" })],
+      references: ["id"],
+    }),
+  ],
+});
+
+export const stepsModel: Model = new Model({
+  name: "Steps",
+  fields: [
+    intIdField,
+    ...basicFields,
+    fields.string({ name: "name" }),
+    fields.relation({
+      name: "cardDeck",
+      model: () => cardDeckModel,
+      fields: [fields.int({ name: "cardDeckId" })],
+      references: ["id"],
+    }),
+    fields.relation({
+      name: "finalField",
+      model: () => finalFieldModel,
+      fields: [fields.int({ name: "finalFieldId" })],
+      references: ["id"],
+    }),
+    fields.string({ name: "data" }),
+  ],
+});
+
+export const models = [userModel, cardDeckModel, finalFieldModel, stepsModel];

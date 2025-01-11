@@ -2,7 +2,7 @@ import { Steps, GameFactory, CardDeck, FinalField } from "@web/interfaces";
 
 const steps = new Steps({
   name: "双子一卡",
-  deck: { id: 1, name: "双子" },
+  cardDeck: { id: 1, name: "双子" },
   finalField: { id: 1, cardDeckId: 1, name: "死镰封锁" },
   data: [
     GameFactory.step({
@@ -160,13 +160,13 @@ const steps = new Steps({
 });
 
 class Store {
-  deckList: CardDeck[] = [];
+  cardDeckList: CardDeck[] = [];
   finalFieldList: FinalField[] = [];
   stepsList: Steps[] = [];
   currentStepsId: number | undefined;
 
   addCardDeck(deck: CardDeck) {
-    this.deckList.push(deck);
+    this.cardDeckList.push(deck);
   }
 
   addFinalField(finalField: FinalField) {
@@ -178,7 +178,7 @@ class Store {
   }
 
   getDeckById(id: number) {
-    return this.deckList.find((deck) => deck.id === id);
+    return this.cardDeckList.find((deck) => deck.id === id);
   }
 
   getFinalFieldById(id: number) {
@@ -214,6 +214,3 @@ class Store {
 }
 
 export const store = new Store();
-store.addCardDeck({ id: 1, name: "双子" });
-store.addFinalField({ id: 1, cardDeckId: 1, name: "死镰封锁" });
-store.addSteps(steps);

@@ -1,10 +1,12 @@
 import type { Express } from "express";
 import { userRouter } from "./user";
-import { postRouter } from "./post";
-import { profileRouter } from "./profile";
+import { finalFieldRouter } from "./final_field";
+import { cardDeckRouter } from "./card_deck";
+import { stepsRouter } from "./steps";
 
 export const initRouter = (app: Express) => {
   app.use(userRouter.build());
-  app.use(postRouter.build());
-  app.use(profileRouter.build());
+  app.use(finalFieldRouter.build());
+  app.use(cardDeckRouter.build());
+  app.use(stepsRouter.build());
 };

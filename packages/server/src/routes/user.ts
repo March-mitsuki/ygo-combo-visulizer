@@ -3,3 +3,5 @@ import { ModelRouterBuilder } from "@server/utils/api";
 
 export const userRouter = new ModelRouterBuilder(userModel);
 userRouter.enableAll();
+
+// userRouter.add()

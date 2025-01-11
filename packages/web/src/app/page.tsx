@@ -11,13 +11,36 @@ import AddCardDeckModal from "@web/components/tool_bar/add_card_deck_modal";
 import AddFinalFieldModal from "@web/components/tool_bar/add_final_field_modal";
 import AddStepsModal from "@web/components/tool_bar/add_steps_modal";
 import { store } from "@web/store";
+import { userStepsClient } from "@web/httpclient/user_steps";
+import { GameFactory, Steps } from "@web/interfaces";
 // import { PersonalityTestResponseClient } from '@web/httpclient/personality_test_response';
 
 export default function Home() {
   // const client = new PersonalityTestResponseClient();
 
+  const init = async () => {
+    const res = await userStepsClient.getUserSteps();
+    store.cardDeckList = res.data.cardDeckList;
+    store.finalFieldList = res.data.finalFieldList;
+    store.stepsList = res.data.stepsList.map((stepsData) => {
+      return new Steps({
+        id: stepsData.id,
+        name: stepsData.name,
+        cardDeck: res.data.cardDeckList.find(
+          (cardDeck) => cardDeck.id === stepsData.cardDeckId,
+        )!,
+        finalField: res.data.finalFieldList.find(
+          (finalField) => finalField.id === stepsData.finalFieldId,
+        )!,
+        data: JSON.parse(stepsData.data).map((stepData: any) => {
+          return GameFactory.step(stepData);
+        }),
+      });
+    });
+  };
   useEffect(() => {
-    console.log("window.app", window.app);
+    init();
+
     window.addEventListener("keydown", (e) => {
       GLOBAL_SHORTCUTS.set(e.key, true);
     });
