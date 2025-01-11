@@ -1,14 +1,4 @@
-# Qupid.JS
+# 蓝狗1融 + 小夜1除 + 震怒1康 + 死链封额外
 
-Why this named Qupid?
-=> Quick Production => Qp => Qupid
-
-# About this repo
-
-
-# ⚠️Current State
-The current version of Qupid.JS is 0.1.0 and is still under active development.
-
-We do not guarantee API compatibility in future versions, and we take no responsibility if Qupid.JS is used in a production environment. USE AS YOUR OWN RISK.
-
-If you're interested in this highly integrated design, we warmly welcome your contributions to the project.
+## 下级1卡（小红示例）
+L1大红+小蓝+新小蓝 =》 L1大红变L1棺材 =》 棺材拉女人 =》 女人堆男人 =》男人回L1大红起跳 =》 小蓝+新小蓝=大蓝 =》 男人+女人=神棒 =》大蓝拉小红 =》 神棒连锁盖放死镰 =》 小红+神棒=大红 =》 大红+大蓝=麻烦桑 =》 麻烦桑变大红+大蓝 =》 大红大蓝变阿宝 =》 阿宝特招小蓝 =》 小蓝拉万圣节小红 =》 两卡链接主播 =》 主播丢1特招大红 =》 大红拉大蓝 =》 大蓝+大红=L2棺材 =》 L2棺材融震怒 =》 红狗吃主播 =》 红狗+棺材=蓝狗 =》 L2棺材墓地装备给震怒 =》 回合结束特招阿宝 =》 对方回合阿宝炸死镰

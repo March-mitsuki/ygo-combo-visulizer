@@ -42,50 +42,7 @@ export const userModel: Model = new Model({
       nullable: true,
       validationOptions: { optional: true, positive: true },
     }),
-    fields.relation({
-      name: "posts",
-      model: () => postModel,
-      isList: true,
-      validationOptions: { optional: true },
-    }),
-    fields.relation({
-      name: "profile",
-      model: () => profileModel,
-      nullable: true,
-      validationOptions: { optional: true },
-    }),
   ],
 });
 
-export const postModel: Model = new Model({
-  name: "Post",
-  fields: [
-    intIdField,
-    ...basicFields,
-    fields.string({ name: "title" }),
-    fields.string({ name: "content" }),
-    fields.relation({
-      name: "author",
-      model: () => userModel,
-      fields: [fields.int({ name: "authorId" })],
-      references: ["id"],
-    }),
-  ],
-});
-
-export const profileModel: Model = new Model({
-  name: "Profile",
-  fields: [
-    intIdField,
-    ...basicFields,
-    fields.string({ name: "blogLink" }),
-    fields.relation({
-      name: "user",
-      model: () => userModel,
-      fields: [fields.int({ name: "userId", unique: true })],
-      references: ["id"],
-    }),
-  ],
-});
-
-export const models = [userModel, postModel, profileModel];
+export const models = [userModel];

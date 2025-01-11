@@ -12,8 +12,9 @@ import logger from "../utils/logger";
 
 const config = loadConfig();
 const optionsSchema = z.object({
-  name: z.string(),
+  name: z.string().optional(),
   generateOnly: z.boolean().default(false),
+  push: z.boolean().default(false),
 });
 
 program
@@ -22,12 +23,17 @@ program
     "-g, --generate-only",
     "Only generate types and prisma.schema file. Do not run `prisma schmea dev` automatically.",
   )
+  .option("-p, --push", "Run `prisma db push` only.")
   .parse(process.argv);
 
 function validateOptions() {
   const result = optionsSchema.safeParse(program.opts());
   if (!result.success) {
     logger.error("Invalid option", result.error.errors);
+    process.exit(1);
+  }
+  if (!result.data.push && !result.data.name) {
+    logger.error("You must provide a name when not using --push option");
     process.exit(1);
   }
   return result.data;
@@ -56,6 +62,20 @@ function runPrismaMigrateDev(name: string) {
   });
 }
 
+function runPrismaPush() {
+  spawnSync("pnpm", ["prisma", "db", "push"], {
+    stdio: "inherit",
+    cwd: path.resolve(process.cwd(), "packages", "server"),
+  });
+}
+
+function runPrismaGenerate() {
+  spawnSync("pnpm", ["prisma", "generate"], {
+    stdio: "inherit",
+    cwd: path.resolve(process.cwd(), "packages", "server"),
+  });
+}
+
 async function writeTypes() {
   const modelTypesPath = path.resolve(
     process.cwd(),
@@ -72,11 +92,20 @@ async function writeTypes() {
 async function main() {
   logger.info("Start migrate prisma schema");
 
-  const { name, generateOnly } = validateOptions();
+  const { name, generateOnly, push } = validateOptions();
   await writePrismaSchema();
   await writeTypes();
   if (!generateOnly) {
-    runPrismaMigrateDev(name);
+    if (push) {
+      runPrismaPush();
+      runPrismaGenerate();
+    } else {
+      if (!name) {
+        logger.error("You must provide a name when not using --push option");
+        process.exit(1);
+      }
+      runPrismaMigrateDev(name);
+    }
   }
 
   logger.info("Done");
